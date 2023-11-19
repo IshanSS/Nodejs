@@ -55,20 +55,24 @@ const updateContact = asyncHandler(async (req, res) => {
     req.body,
     { new: true }
   );
-  res.status(200).json(updatedContact);
+  res.status(200).json(updateContact);
 });
 
 // @desc delete contacts
 // @routes DELETE /api/contacts/id
 // @access public
 const deleteContact = asyncHandler(async (req, res) => {
-  const contact = await Contact.findById(req.params.id);
+  const contact = await Contact.findByIdAndDelete(req.params.id);
+
   if (!contact) {
     res.status(404);
-    throw new Error("Contact not found");
+    throw new Error("Contact not found with the provided id");
   }
-  await Contact.remove();
-  res.status(200).json(contact);
+
+  res.status(204).json({
+    status: "success",
+    data: null,
+  });
 });
 
 module.exports = {
