@@ -48,8 +48,16 @@ const loginUser = asyncHandler(async (req, res) => {
   }
   const user = await User.findOne({ email });
 
+  console.log("Encreopted password is", user.password);
+
+  console.log("Aba if statement ma chirna lagyo hai");
+
+  const comparedPassword = await bcrypt.compare(password, user.password);
+  console.log("The password validation is :", comparedPassword);
+
   // compare password with hashedpassword
   if (user && (await bcrypt.compare(password, user.password))) {
+    console.log("comparision sakiyo");
     const accessToken = jwt.sign(
       {
         user: {
